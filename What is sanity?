@@ -1,0 +1,22 @@
+
+from memory_handler import MemoryHandler
+
+def main():
+  
+    memory = MemoryHandler()
+
+    
+    personality = memory.get_personality()
+    print("🤖 Personality loaded:", personality)
+
+    
+    memory.add_memory("Jarvis started up successfully.")
+
+    
+    print("\n🧠 Recent Memories:")
+    for mem in memory.get_recent_memories():
+        print("-", mem)
+
+# Run the main function
+if __name__ == "__main__":
+    main()
