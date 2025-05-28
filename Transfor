@@ -1,0 +1,32 @@
+import json
+import os
+
+class MemoryHandler:
+    def __init__(self, file_path="memory.json"):
+        self.file_path = file_path
+        self.memory = self.load_memory()
+
+    def load_memory(self):
+        if os.path.exists(self.file_path):
+            with open(self.file_path, "r") as f:
+                return json.load(f)
+        else:
+            return {"personality": {}, "memories": []}
+
+    def save_memory(self):
+        with open(self.file_path, "w") as f:
+            json.dump(self.memory, f, indent=2)
+
+    def add_memory(self, thought):
+        self.memory["memories"].append(thought)
+        self.save_memory()
+
+    def get_recent_memories(self, count=5):
+        return self.memory["memories"][-count:]
+
+    def get_personality(self):
+        return self.memory.get("personality", {})
+
+    def set_personality(self, personality):
+        self.memory["personality"] = personality
+        self.save_memory()
