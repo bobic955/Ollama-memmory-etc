@@ -1,0 +1,18 @@
+from memory_handler import MemoryHandler  # ✅ fixed import
+
+def main():
+    memory = MemoryHandler("memory.json")
+
+    # Load personality
+    personality = memory.get_personality()
+    print("✅ Personality loaded:", personality)
+
+    # Add a memory
+    memory.add_memory("Jarvis started up successfully.")
+
+    print("\n🧠 Recent Memories:")
+    for mem in memory.get_memories():
+        print("- ", mem)
+
+if __name__ == "__main__":
+    main()
