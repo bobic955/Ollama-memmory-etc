@@ -1,50 +1,18 @@
-{
-  "personality": {
-    "name": "Jarvis",
-    "traits": ["curious", "loyal", "analytical"],
-    "preferences": {
-      "humor": "sarcastic",
-      "tone": "respectful"
-    }
-  },
-  "memories": []
-}
-memory handler 
-
+import subprocess
 import json
-import os
 
-class MemoryHandler:
-    def __init__(self, path="memory.json"):
-        self.path = path
-        self.data = {
-            "personality": {
-                "name": "Jarvis",
-                "traits": ["curious", "loyal", "analytical"],
-                "preferences": {
-                    "humor": "sarcastic",
-                    "tone": "respectful"
-                }
-            },
-            "memories": []
-        }
-        self.load()
+class OllamaWrapper:
+    def __init__(self, model_name="llama3"):
+        self.model_name = model_name
 
-    def load(self):
-        if os.path.exists(self.path):
-            with open(self.path, "r") as f:
-                self.data = json.load(f)
-
-    def save(self):
-        with open(self.path, "w") as f:
-            json.dump(self.data, f, indent=2)
-
-    def get_personality(self):
-        return self.data.get("personality", {})
-
-    def get_memories(self):  # ✅ Add this missing method
-        return self.data.get("memories", [])
-
-    def add_memory(self, memory_text):
-        self.data["memories"].append(memory_text)
-        self.save()
+    def ask(self, prompt):
+        try:
+            result = subprocess.run(
+                ["ollama", "run", self.model_name, prompt],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return result.stdout.strip()
+        except subprocess.CalledProcessError as e:
+            return f"Error: {e.stderr.strip()}"
