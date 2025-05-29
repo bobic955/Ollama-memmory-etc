@@ -9,3 +9,42 @@
   },
   "memories": []
 }
+memory handler 
+
+import json
+import os
+
+class MemoryHandler:
+    def __init__(self, path="memory.json"):
+        self.path = path
+        self.data = {
+            "personality": {
+                "name": "Jarvis",
+                "traits": ["curious", "loyal", "analytical"],
+                "preferences": {
+                    "humor": "sarcastic",
+                    "tone": "respectful"
+                }
+            },
+            "memories": []
+        }
+        self.load()
+
+    def load(self):
+        if os.path.exists(self.path):
+            with open(self.path, "r") as f:
+                self.data = json.load(f)
+
+    def save(self):
+        with open(self.path, "w") as f:
+            json.dump(self.data, f, indent=2)
+
+    def get_personality(self):
+        return self.data.get("personality", {})
+
+    def get_memories(self):  # ✅ Add this missing method
+        return self.data.get("memories", [])
+
+    def add_memory(self, memory_text):
+        self.data["memories"].append(memory_text)
+        self.save()
